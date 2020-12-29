@@ -232,6 +232,10 @@ func (this *PolyManager) IsEpoch(hdr *polytypes.Header) (bool, []byte, error) {
 	return true, publickeys, nil
 }
 
+func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
+	return true
+}
+
 func (this *PolyManager) handleDepositEvents(height uint32) bool {
 	lastEpoch := this.findLatestHeight()
 	hdr, err := this.polySdk.GetHeaderByHeight(height + 1)
@@ -286,6 +290,9 @@ func (this *PolyManager) handleDepositEvents(height uint32) bool {
 				param := &common2.ToMerkleValue{}
 				if err := param.Deserialization(common.NewZeroCopySource(value)); err != nil {
 					log.Errorf("handleDepositEvents - failed to deserialize MakeTxParam (value: %x, err: %v)", value, err)
+					continue
+				}
+				if !this.isPaid(param) {
 					continue
 				}
 				var isTarget bool
