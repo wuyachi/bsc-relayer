@@ -1,5 +1,6 @@
 .vscode
 config.json
+config-testnet.json
 wallet.dat
 log/*.log
 db/bolt.bin
