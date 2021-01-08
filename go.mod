@@ -13,3 +13,6 @@ require (
 	github.com/polynetwork/poly-go-sdk v0.0.0-20200817120957-365691ad3493
 	github.com/urfave/cli v1.22.5
 )
+
+
+replace poly-bridge => github.com/polynetwork/poly-bridge v0.0.0-20210108054753-c3ba2b01fdb7

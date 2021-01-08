@@ -50,9 +50,14 @@ const (
 type ServiceConfig struct {
 	PolyConfig      *PolyConfig
 	BSCConfig       *BSCConfig
+	BridgeConfig    *BridgeConfig
 	BoltDbPath      string
 	RoutineNum      int64
 	TargetContracts []map[string]map[string][]uint64
+}
+
+type BridgeConfig struct {
+	RestURL []string
 }
 
 type PolyConfig struct {

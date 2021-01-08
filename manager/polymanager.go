@@ -51,6 +51,8 @@ import (
 	"github.com/ethereum/go-ethereum"
 	"github.com/polynetwork/bsc_relayer/tools"
 
+	"poly-bridge/bridgesdk"
+
 	polytypes "github.com/polynetwork/poly/core/types"
 )
 
@@ -66,10 +68,11 @@ type PolyManager struct {
 	exitChan     chan int
 	db           *db.BoltDB
 	ethClient    *ethclient.Client
+	bridgeSdk    *bridgesdk.BridgeSdkPro
 	senders      []*EthSender
 }
 
-func NewPolyManager(servCfg *config.ServiceConfig, startblockHeight uint32, polySdk *sdk.PolySdk, ethereumsdk *ethclient.Client, boltDB *db.BoltDB) (*PolyManager, error) {
+func NewPolyManager(servCfg *config.ServiceConfig, startblockHeight uint32, polySdk *sdk.PolySdk, ethereumsdk *ethclient.Client, bridgeSdk *bridgesdk.BridgeSdkPro, boltDB *db.BoltDB) (*PolyManager, error) {
 	contractabi, err := abi.JSON(strings.NewReader(eccm_abi.EthCrossChainManagerABI))
 	if err != nil {
 		return nil, err
@@ -115,6 +118,7 @@ func NewPolyManager(servCfg *config.ServiceConfig, startblockHeight uint32, poly
 		exitChan:     make(chan int),
 		config:       servCfg,
 		polySdk:      polySdk,
+		bridgeSdk:    bridgeSdk,
 		syncedHeight: startblockHeight,
 		contractAbi:  &contractabi,
 		db:           boltDB,
@@ -233,6 +237,7 @@ func (this *PolyManager) IsEpoch(hdr *polytypes.Header) (bool, []byte, error) {
 }
 
 func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
+	// this.bridgeSdk.CheckFee([]string{string(param.MakeTxParam.TxHash)})
 	return true
 }
 
