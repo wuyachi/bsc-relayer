@@ -237,8 +237,20 @@ func (this *PolyManager) IsEpoch(hdr *polytypes.Header) (bool, []byte, error) {
 }
 
 func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
-	// this.bridgeSdk.CheckFee([]string{string(param.MakeTxParam.TxHash)})
-	return true
+	for {
+		resp, err := this.bridgeSdk.CheckFee([]string{string(param.MakeTxParam.TxHash)})
+		if err != nil {
+			log.Errorf("CheckFee failed:%v", err, "TxHash", string(param.MakeTxParam.TxHash))
+			time.Sleep(time.Second)
+			continue
+		}
+		if len(resp) != 1 {
+			log.Errorf("CheckFee resp invalid, length ", len(resp))
+			time.Sleep(time.Second)
+			continue
+		}
+		return resp[0].HasPay
+	}
 }
 
 func (this *PolyManager) handleDepositEvents(height uint32) bool {
@@ -298,8 +310,10 @@ func (this *PolyManager) handleDepositEvents(height uint32) bool {
 					continue
 				}
 				if !this.isPaid(param) {
+					log.Infof("%v skipped because not paid", event.TxHash)
 					continue
 				}
+				log.Infof("%v is paid, start processing", event.TxHash)
 				var isTarget bool
 				if len(this.config.TargetContracts) > 0 {
 					toContractStr := ethcommon.BytesToAddress(param.MakeTxParam.ToContractAddress).String()
