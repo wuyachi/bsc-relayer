@@ -1,6 +1,6 @@
 {
     "PolyConfig": {
-        "RestURL": "http://138.91.6.226:40336",
+        "RestURL": "http://138.91.6.226:20336",
         "EntranceContractAddress": "0300000000000000000000000000000000000000",
         "WalletFile": "../poly-io-test/.wallets/wallet1.dat",
         "WalletPwd": "4cUYqGj2yib718E7ZmGQc"
