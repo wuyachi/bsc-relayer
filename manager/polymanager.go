@@ -548,7 +548,7 @@ func (this *EthSender) commitHeader(header *polytypes.Header, pubkList []byte) b
 	gasLimit, err := this.ethClient.EstimateGas(context.Background(), callMsg)
 	if err != nil {
 		log.Errorf("commitHeader - estimate gas limit error: %s", err.Error())
-		return false
+		return true
 	}
 
 	nonce := this.nonceManager.GetAddressNonce(this.acc.Address)
