@@ -238,14 +238,15 @@ func (this *PolyManager) IsEpoch(hdr *polytypes.Header) (bool, []byte, error) {
 
 func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 	for {
-		resp, err := this.bridgeSdk.CheckFee([]string{string(param.MakeTxParam.TxHash)})
+		txHash := hex.EncodeToString(param.MakeTxParam.TxHash)
+		resp, err := this.bridgeSdk.CheckFee([]string{txHash})
 		if err != nil {
-			log.Errorf("CheckFee failed:%v, TxHash:%s", err, string(param.MakeTxParam.TxHash))
+			log.Errorf("CheckFee failed:%v, TxHash:%s", err, txHash)
 			time.Sleep(time.Second)
 			continue
 		}
 		if len(resp) != 1 {
-			log.Errorf("CheckFee resp invalid, length %d, TxHash:%s", len(resp), string(param.MakeTxParam.TxHash))
+			log.Errorf("CheckFee resp invalid, length %d, TxHash:%s", len(resp), txHash)
 			time.Sleep(time.Second)
 			continue
 		}
@@ -256,7 +257,7 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 		case bridgesdk.STATE_NOTPAY:
 			return false
 		case bridgesdk.STATE_NOTCHECK:
-			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s, wait...", string(param.MakeTxParam.TxHash))
+			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s, wait...", txHash)
 			time.Sleep(time.Second)
 			continue
 		}
