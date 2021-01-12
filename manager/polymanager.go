@@ -240,16 +240,27 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 	for {
 		resp, err := this.bridgeSdk.CheckFee([]string{string(param.MakeTxParam.TxHash)})
 		if err != nil {
-			log.Errorf("CheckFee failed:%v", err, "TxHash", string(param.MakeTxParam.TxHash))
+			log.Errorf("CheckFee failed:%v, TxHash:%s", err, string(param.MakeTxParam.TxHash))
 			time.Sleep(time.Second)
 			continue
 		}
 		if len(resp) != 1 {
-			log.Errorf("CheckFee resp invalid, length ", len(resp))
+			log.Errorf("CheckFee resp invalid, length %d, TxHash:%s", len(resp), string(param.MakeTxParam.TxHash))
 			time.Sleep(time.Second)
 			continue
 		}
-		return resp[0].HasPay
+
+		switch resp[0].PayState {
+		case bridgesdk.STATE_HASPAY:
+			return true
+		case bridgesdk.STATE_NOTPAY:
+			return false
+		case bridgesdk.STATE_NOTCHECK:
+			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s, wait...", string(param.MakeTxParam.TxHash))
+			time.Sleep(time.Second)
+			continue
+		}
+
 	}
 }
 
