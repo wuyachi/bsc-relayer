@@ -478,6 +478,8 @@ github.com/polynetwork/poly-bridge v0.0.0-20210108054753-c3ba2b01fdb7 h1:MyQIMOq
 github.com/polynetwork/poly-bridge v0.0.0-20210108054753-c3ba2b01fdb7/go.mod h1:qKkTpx72ipk5yVgj3qp5hunk6/vwCqcVyyRE5M4oW4o=
 github.com/polynetwork/poly-bridge v0.0.0-20210111092611-084fb5033231 h1:eRvuDlyvUT2CdNFd5nxyOxp5wqgfz2lvRlYqZFzoG24=
 github.com/polynetwork/poly-bridge v0.0.0-20210111092611-084fb5033231/go.mod h1:jjPHojL1RuaMOEr0CT0Pb26kQ6r2/J/gBzFeH2s2Lac=
+github.com/polynetwork/poly-bridge v0.0.0-20210112082403-a45d71989293 h1:jP8vTQQyoJAyq6+DOkh3lSkYrtjWvOdgK4RJKd9vMfs=
+github.com/polynetwork/poly-bridge v0.0.0-20210112082403-a45d71989293/go.mod h1:jjPHojL1RuaMOEr0CT0Pb26kQ6r2/J/gBzFeH2s2Lac=
 github.com/polynetwork/poly-go-sdk v0.0.0-20200817120957-365691ad3493 h1:wob4aH5NxiDFIOWlpKbmoIb88QOccDNa1+rl93czjr8=
 github.com/polynetwork/poly-go-sdk v0.0.0-20200817120957-365691ad3493/go.mod h1:a1wMo/VFoUAKX2yVjipvFug6Yu5BPhf/2tP5xywqfIc=
 github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndrE9hABlRI=

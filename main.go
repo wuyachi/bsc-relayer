@@ -119,9 +119,9 @@ func startServer(ctx *cli.Context) {
 		return
 	}
 
-	bridgeSdk := bridgesdk.NewBridgeSdkPro(servConfig.BridgeConfig.RestURL, 5)
+	// bridgeSdk := bridgesdk.NewBridgeSdkPro(servConfig.BridgeConfig.RestURL, 5)
 
-	initPolyServer(servConfig, polySdk, ethereumsdk, bridgeSdk, boltDB)
+	// initPolyServer(servConfig, polySdk, ethereumsdk, bridgeSdk, boltDB)
 	initBSCServer(servConfig, polySdk, ethereumsdk, boltDB)
 	waitToExit()
 }
