@@ -210,7 +210,7 @@ func (this *BSCManager) init() error {
 	if this.forceHeight > 0 && this.forceHeight < latestHeight {
 		this.currentHeight = this.forceHeight
 	} else {
-		this.currentHeight = latestHeight
+		this.currentHeight = latestHeight - this.config.BSCConfig.BlockConfig
 	}
 	log.Infof("BSCManager init - start height: %d", this.currentHeight)
 	return nil

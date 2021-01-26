@@ -1,5 +1,4 @@
 .vscode
-config.json
 config*.json
 wallet.dat
 log/*.log
