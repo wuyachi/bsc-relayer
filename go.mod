@@ -15,4 +15,4 @@ require (
 	poly-bridge v0.0.0-20210112082403-a45d71989293
 )
 
-replace poly-bridge => github.com/polynetwork/poly-bridge v0.0.0-20210112082403-a45d71989293
+replace poly-bridge => github.com/polynetwork/poly-bridge v0.0.0-20210126083254-80335b53070a

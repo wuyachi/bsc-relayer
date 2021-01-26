@@ -239,7 +239,8 @@ func (this *PolyManager) IsEpoch(hdr *polytypes.Header) (bool, []byte, error) {
 func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 	for {
 		txHash := hex.EncodeToString(param.MakeTxParam.TxHash)
-		resp, err := this.bridgeSdk.CheckFee([]string{txHash})
+		req := &bridgesdk.CheckFeeReq{Hash: txHash, ChainId: param.FromChainID}
+		resp, err := this.bridgeSdk.CheckFee([]*bridgesdk.CheckFeeReq{req})
 		if err != nil {
 			log.Errorf("CheckFee failed:%v, TxHash:%s", err, txHash)
 			time.Sleep(time.Second)
