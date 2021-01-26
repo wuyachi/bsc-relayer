@@ -242,12 +242,12 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 		req := &bridgesdk.CheckFeeReq{Hash: txHash, ChainId: param.FromChainID}
 		resp, err := this.bridgeSdk.CheckFee([]*bridgesdk.CheckFeeReq{req})
 		if err != nil {
-			log.Errorf("CheckFee failed:%v, TxHash:%s", err, txHash)
+			log.Errorf("CheckFee failed:%v, TxHash:%s FromChainID:%d", err, txHash, param.FromChainID)
 			time.Sleep(time.Second)
 			continue
 		}
 		if len(resp) != 1 {
-			log.Errorf("CheckFee resp invalid, length %d, TxHash:%s", len(resp), txHash)
+			log.Errorf("CheckFee resp invalid, length %d, TxHash:%s FromChainID:%d", len(resp), txHash, param.FromChainID)
 			time.Sleep(time.Second)
 			continue
 		}
@@ -258,7 +258,7 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 		case bridgesdk.STATE_NOTPAY:
 			return false
 		case bridgesdk.STATE_NOTCHECK:
-			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s, wait...", txHash)
+			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s FromChainID:%d, wait...", txHash, param.FromChainID)
 			time.Sleep(time.Second)
 			continue
 		}
