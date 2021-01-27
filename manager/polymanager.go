@@ -273,7 +273,7 @@ func (this *PolyManager) handleDepositEvents(height uint32) bool {
 		log.Errorf("handleDepositEvents - GetNodeHeader on height :%d failed", height)
 		return false
 	}
-	isCurr := lastEpoch < height+1
+	isCurr := lastEpoch <= height
 	isEpoch, pubkList, err := this.IsEpoch(hdr)
 	if err != nil {
 		log.Errorf("falied to check isEpoch: %v", err)
