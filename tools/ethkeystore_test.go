@@ -18,7 +18,7 @@ package tools
 
 import (
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/polynetwork/eth_relayer/config"
+	"github.com/polynetwork/bsc-relayer/config"
 	"testing"
 )
 

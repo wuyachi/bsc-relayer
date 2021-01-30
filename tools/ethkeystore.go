@@ -24,8 +24,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/polynetwork/bsc_relayer/config"
-	"github.com/polynetwork/bsc_relayer/log"
+	"github.com/polynetwork/bsc-relayer/config"
+	"github.com/polynetwork/bsc-relayer/log"
 )
 
 type EthKeyStore struct {

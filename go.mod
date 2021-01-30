@@ -1,4 +1,4 @@
-module github.com/polynetwork/bsc_relayer
+module github.com/polynetwork/bsc-relayer
 
 go 1.15
 

@@ -24,7 +24,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/polynetwork/bsc_relayer/log"
+	"github.com/polynetwork/bsc-relayer/log"
 )
 
 const (

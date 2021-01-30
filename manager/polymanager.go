@@ -34,9 +34,9 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ontio/ontology-crypto/keypair"
 	"github.com/ontio/ontology-crypto/signature"
-	"github.com/polynetwork/bsc_relayer/config"
-	"github.com/polynetwork/bsc_relayer/db"
-	"github.com/polynetwork/bsc_relayer/log"
+	"github.com/polynetwork/bsc-relayer/config"
+	"github.com/polynetwork/bsc-relayer/db"
+	"github.com/polynetwork/bsc-relayer/log"
 	"github.com/polynetwork/eth-contracts/go_abi/eccd_abi"
 	"github.com/polynetwork/eth-contracts/go_abi/eccm_abi"
 	sdk "github.com/polynetwork/poly-go-sdk"
@@ -49,7 +49,7 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum"
-	"github.com/polynetwork/bsc_relayer/tools"
+	"github.com/polynetwork/bsc-relayer/tools"
 
 	"poly-bridge/bridgesdk"
 

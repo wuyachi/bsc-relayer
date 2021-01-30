@@ -24,7 +24,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/polynetwork/bsc_relayer/log"
+	"github.com/polynetwork/bsc-relayer/log"
 )
 
 const clear_nonce_interval = 10 * time.Minute

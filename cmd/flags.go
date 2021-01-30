@@ -19,7 +19,7 @@ package cmd
 import (
 	"strings"
 
-	"github.com/polynetwork/bsc_relayer/config"
+	"github.com/polynetwork/bsc-relayer/config"
 	"github.com/urfave/cli"
 )
 

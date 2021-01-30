@@ -26,11 +26,11 @@ import (
 	"poly-bridge/bridgesdk"
 
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/polynetwork/bsc_relayer/cmd"
-	"github.com/polynetwork/bsc_relayer/config"
-	"github.com/polynetwork/bsc_relayer/db"
-	"github.com/polynetwork/bsc_relayer/log"
-	"github.com/polynetwork/bsc_relayer/manager"
+	"github.com/polynetwork/bsc-relayer/cmd"
+	"github.com/polynetwork/bsc-relayer/config"
+	"github.com/polynetwork/bsc-relayer/db"
+	"github.com/polynetwork/bsc-relayer/log"
+	"github.com/polynetwork/bsc-relayer/manager"
 	sdk "github.com/polynetwork/poly-go-sdk"
 	"github.com/urfave/cli"
 )
