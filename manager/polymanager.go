@@ -187,6 +187,9 @@ func (this *PolyManager) MonitorChain() {
 					break
 				}
 				this.syncedHeight++
+				if this.syncedHeight%1000 == 0 {
+					break
+				}
 			}
 			if err = this.db.UpdatePolyHeight(this.syncedHeight - 1); err != nil {
 				log.Errorf("PolyManager MonitorChain - failed to save height: %v", err)
