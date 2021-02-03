@@ -162,7 +162,7 @@ func (this *PolyManager) init() bool {
 func (this *PolyManager) MonitorChain() {
 	ret := this.init()
 	if ret == false {
-		log.Errorf("MonitorChain - init failed\n")
+		log.Errorf("PolyManager MonitorChain - init failed\n")
 	}
 	monitorTicker := time.NewTicker(config.ONT_MONITOR_INTERVAL)
 	var blockHandleResult bool
@@ -171,16 +171,17 @@ func (this *PolyManager) MonitorChain() {
 		case <-monitorTicker.C:
 			latestheight, err := this.polySdk.GetCurrentBlockHeight()
 			if err != nil {
-				log.Errorf("MonitorChain poly - get chain block height error: %s", err)
+				log.Errorf("PolyManager MonitorChain - get chain block height error: %s", err)
 				continue
 			}
 			latestheight--
 			if latestheight-this.syncedHeight < config.ONT_USEFUL_BLOCK_NUM {
 				continue
 			}
-			log.Infof("MonitorChain poly - latest height: %d, synced height: %d", latestheight, this.syncedHeight)
+			log.Infof("PolyManager MonitorChain - latest height: %d, synced height: %d", latestheight, this.syncedHeight)
 			blockHandleResult = true
 			for this.syncedHeight <= latestheight-config.ONT_USEFUL_BLOCK_NUM {
+				log.Infof("PolyManager MonitorChain handleDepositEvents %d", this.syncedHeight)
 				blockHandleResult = this.handleDepositEvents(this.syncedHeight)
 				if blockHandleResult == false {
 					break
@@ -188,7 +189,7 @@ func (this *PolyManager) MonitorChain() {
 				this.syncedHeight++
 			}
 			if err = this.db.UpdatePolyHeight(this.syncedHeight - 1); err != nil {
-				log.Errorf("MonitorChain poly - failed to save height: %v", err)
+				log.Errorf("PolyManager MonitorChain - failed to save height: %v", err)
 			}
 		case <-this.exitChan:
 			return

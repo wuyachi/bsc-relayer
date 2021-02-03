@@ -169,7 +169,7 @@ func (this *BSCManager) MonitorChain() {
 		case <-fetchBlockTicker.C:
 			this.height, err = tools.GetNodeHeight(this.config.BSCConfig.RestURL, this.restClient)
 			if err != nil {
-				log.Infof("MonitorChain bsc - cannot get node height, err: %s", err)
+				log.Infof("BSCManager MonitorChain - cannot get node height, err: %s", err)
 				continue
 			}
 			if this.height-this.currentHeight <= config.BSC_USEFUL_BLOCK_NUM {
@@ -179,6 +179,7 @@ func (this *BSCManager) MonitorChain() {
 			blockHandleResult = true
 
 			for this.currentHeight < this.height-config.BSC_USEFUL_BLOCK_NUM {
+				log.Infof("BSCManager MonitorChain handleNewBlock %d", this.currentHeight+1)
 				blockHandleResult = this.handleNewBlock(this.currentHeight + 1)
 				if blockHandleResult == false {
 					break
@@ -368,7 +369,7 @@ func (this *BSCManager) commitHeader() int {
 			break
 		}
 	}
-	log.Infof("MonitorChain bsc - commitHeader - send transaction %s to poly chain and confirmed on height %d, synced bsc height %d, bsc height %d, took %s, header count %d", tx.ToHexString(), h, this.currentHeight, this.height, time.Now().Sub(start).String(), len(this.header4sync))
+	log.Infof("BSCManager MonitorChain - commitHeader - send transaction %s to poly chain and confirmed on height %d, synced bsc height %d, bsc height %d, took %s, header count %d", tx.ToHexString(), h, this.currentHeight, this.height, time.Now().Sub(start).String(), len(this.header4sync))
 	this.header4sync = make([][]byte, 0)
 	return 0
 }
