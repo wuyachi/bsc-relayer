@@ -70,6 +70,7 @@ type PolyManager struct {
 	ethClient    *ethclient.Client
 	bridgeSdk    *bridgesdk.BridgeSdkPro
 	senders      []*EthSender
+	eccdInstance *eccd_abi.EthCrossChainData
 }
 
 func NewPolyManager(servCfg *config.ServiceConfig, startblockHeight uint32, polySdk *sdk.PolySdk, ethereumsdk *ethclient.Client, bridgeSdk *bridgesdk.BridgeSdkPro, boltDB *db.BoltDB) (*PolyManager, error) {
@@ -128,12 +129,18 @@ func NewPolyManager(servCfg *config.ServiceConfig, startblockHeight uint32, poly
 }
 
 func (this *PolyManager) findLatestHeight() uint32 {
-	address := ethcommon.HexToAddress(this.config.BSCConfig.ECCDContractAddress)
-	instance, err := eccd_abi.NewEthCrossChainData(address, this.ethClient)
-	if err != nil {
-		log.Errorf("findLatestHeight - new eth cross chain failed: %s", err.Error())
-		return 0
+	if this.eccdInstance == nil {
+		address := ethcommon.HexToAddress(this.config.BSCConfig.ECCDContractAddress)
+		instance, err := eccd_abi.NewEthCrossChainData(address, this.ethClient)
+		if err != nil {
+			log.Errorf("findLatestHeight - new eth cross chain failed: %s", err.Error())
+			return 0
+		}
+		this.eccdInstance = instance
 	}
+
+	instance := this.eccdInstance
+
 	height, err := instance.GetCurEpochStartHeight(nil)
 	if err != nil {
 		log.Errorf("findLatestHeight - GetLatestHeight failed: %s", err.Error())
