@@ -406,6 +406,11 @@ func (this *BSCManager) MonitorDeposit() {
 				continue
 			}
 			snycheight := this.findLastestHeight()
+			if height < snycheight {
+				log.Infof("MonitorChain - height(%d) < snycheight(%d)", height, snycheight)
+				time.Sleep(time.Second)
+				continue
+			}
 			log.Log.Info("MonitorDeposit bsc - snyced bsc height", snycheight, "bsc height", height, "diff", height-snycheight)
 			this.handleLockDepositEvents(snycheight)
 		case <-this.exitChan:
