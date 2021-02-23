@@ -167,7 +167,7 @@ func (this *BSCManager) MonitorChain() {
 	for {
 		select {
 		case <-fetchBlockTicker.C:
-			this.height, err = tools.GetNodeHeight(this.config.BSCConfig.RestURL, this.restClient)
+			this.height, err = tools.GetNodeHeight(this.config.BSCConfig.URL(), this.restClient)
 			if err != nil {
 				log.Infof("BSCManager MonitorChain - cannot get node height, err: %s", err)
 				continue
@@ -400,7 +400,7 @@ func (this *BSCManager) MonitorDeposit() {
 	for {
 		select {
 		case <-monitorTicker.C:
-			height, err := tools.GetNodeHeight(this.config.BSCConfig.RestURL, this.restClient)
+			height, err := tools.GetNodeHeight(this.config.BSCConfig.URL(), this.restClient)
 			if err != nil {
 				log.Infof("MonitorChain - cannot get node height, err: %s", err)
 				continue
@@ -446,7 +446,7 @@ func (this *BSCManager) handleLockDepositEvents(refHeight uint64) error {
 		heightHex := hexutil.EncodeBig(big.NewInt(height))
 		proofKey := hexutil.Encode(keyBytes)
 		//2. get proof
-		proof, err := tools.GetProof(this.config.BSCConfig.RestURL, this.config.BSCConfig.ECCDContractAddress, proofKey, heightHex, this.restClient)
+		proof, err := tools.GetProof(this.config.BSCConfig.URL(), this.config.BSCConfig.ECCDContractAddress, proofKey, heightHex, this.restClient)
 		if err != nil {
 			log.Errorf("handleLockDepositEvents - error :%s\n", err.Error())
 			continue

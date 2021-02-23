@@ -22,6 +22,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/polynetwork/bsc-relayer/log"
@@ -68,14 +69,19 @@ type PolyConfig struct {
 }
 
 type BSCConfig struct {
+	count               uint64
 	SideChainId         uint64
-	RestURL             string
+	RestURL             []string
 	ECCMContractAddress string
 	ECCDContractAddress string
 	KeyStorePath        string
 	KeyStorePwdSet      map[string]string
 	BlockConfig         uint64
 	HeadersPerBatch     int
+}
+
+func (c *BSCConfig) URL() string {
+	return c.RestURL[atomic.AddUint64(&c.count, 1)%uint64(len(c.RestURL))]
 }
 
 type ONTConfig struct {

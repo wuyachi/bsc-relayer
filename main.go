@@ -102,7 +102,7 @@ func startServer(ctx *cli.Context) {
 	}
 
 	// create ethereum sdk
-	ethereumsdk, err := ethclient.Dial(servConfig.BSCConfig.RestURL)
+	ethereumsdk, err := ethclient.Dial(servConfig.BSCConfig.RestURL[0])
 	if err != nil {
 		log.Errorf("startServer - cannot dial sync node, err: %s", err)
 		return
