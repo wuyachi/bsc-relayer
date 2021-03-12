@@ -129,7 +129,7 @@ func startServer(ctx *cli.Context) {
 func initPolyServer(servConfig *config.ServiceConfig, polysdk *sdk.PolySdk, ethereumsdk *ethclient.Client, bridgeSdk *bridgesdk.BridgeSdkPro, boltDB *db.BoltDB) {
 	mgr, err := manager.NewPolyManager(servConfig, uint32(PolyStartHeight), polysdk, ethereumsdk, bridgeSdk, boltDB)
 	if err != nil {
-		log.Error("initPolyServer - PolyServer service start failed: %v", err)
+		log.Fatalf("initPolyServer - PolyServer service start failed: %v", err)
 		return
 	}
 	go mgr.MonitorChain()
@@ -138,7 +138,7 @@ func initPolyServer(servConfig *config.ServiceConfig, polysdk *sdk.PolySdk, ethe
 func initBSCServer(servConfig *config.ServiceConfig, polysdk *sdk.PolySdk, ethereumsdk *ethclient.Client, boltDB *db.BoltDB) {
 	mgr, err := manager.NewBSCManager(servConfig, StartHeight, StartForceHeight, polysdk, ethereumsdk, boltDB)
 	if err != nil {
-		log.Error("initBSCServer - bsc service start err: %s", err.Error())
+		log.Fatalf("initBSCServer - bsc service start err: %s", err.Error())
 		return
 	}
 	go mgr.MonitorChain()
