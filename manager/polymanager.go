@@ -436,7 +436,7 @@ func (this *EthSender) sendTxToEth(info *EthTxInfo) error {
 	for {
 		err = this.ethClient.SendTransaction(context.Background(), signedtx)
 		if err != nil {
-			log.Errorf("poly to bsc SendTransaction error:%v", err)
+			log.Errorf("poly to bsc SendTransaction error: %v, nonce %d", err, nonce)
 		}
 		hash := signedtx.Hash()
 
