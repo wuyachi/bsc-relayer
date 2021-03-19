@@ -618,7 +618,11 @@ func (this *EthSender) Balance() (*big.Int, error) {
 
 // TODO: check the status of tx
 func (this *EthSender) waitTransactionConfirm(polyTxHash string, hash ethcommon.Hash) bool {
+	start := time.Now()
 	for {
+		if time.Now().After(start.Add(time.Minute * 5)) {
+			return false
+		}
 		time.Sleep(time.Second * 1)
 		_, ispending, err := this.ethClient.TransactionByHash(context.Background(), hash)
 		if err != nil {
