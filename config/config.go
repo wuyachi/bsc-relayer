@@ -54,6 +54,7 @@ type ServiceConfig struct {
 	BridgeConfig    *BridgeConfig
 	BoltDbPath      string
 	RoutineNum      int64
+	Free            bool
 	TargetContracts []map[string]map[string][]uint64
 }
 

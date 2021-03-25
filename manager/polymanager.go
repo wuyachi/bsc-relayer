@@ -248,6 +248,9 @@ func (this *PolyManager) IsEpoch(hdr *polytypes.Header) (bool, []byte, error) {
 }
 
 func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
+	if this.config.Free {
+		return true
+	}
 	for {
 		txHash := hex.EncodeToString(param.MakeTxParam.TxHash)
 		req := &bridgesdk.CheckFeeReq{Hash: txHash, ChainId: param.FromChainID}
