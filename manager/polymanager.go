@@ -51,7 +51,7 @@ import (
 	"github.com/ethereum/go-ethereum"
 	"github.com/polynetwork/bsc-relayer/tools"
 
-	"poly-bridge/bridgesdk"
+	"poly_bridge_sdk"
 
 	polytypes "github.com/polynetwork/poly/core/types"
 )
@@ -68,12 +68,12 @@ type PolyManager struct {
 	exitChan     chan int
 	db           *db.BoltDB
 	ethClient    *ethclient.Client
-	bridgeSdk    *bridgesdk.BridgeSdkPro
+	bridgeSdk    *poly_bridge_sdk.BridgeFeeCheck
 	senders      []*EthSender
 	eccdInstance *eccd_abi.EthCrossChainData
 }
 
-func NewPolyManager(servCfg *config.ServiceConfig, startblockHeight uint32, polySdk *sdk.PolySdk, ethereumsdk *ethclient.Client, bridgeSdk *bridgesdk.BridgeSdkPro, boltDB *db.BoltDB) (*PolyManager, error) {
+func NewPolyManager(servCfg *config.ServiceConfig, startblockHeight uint32, polySdk *sdk.PolySdk, ethereumsdk *ethclient.Client, bridgeSdk *poly_bridge_sdk.BridgeFeeCheck, boltDB *db.BoltDB) (*PolyManager, error) {
 	contractabi, err := abi.JSON(strings.NewReader(eccm_abi.EthCrossChainManagerABI))
 	if err != nil {
 		return nil, err
@@ -253,8 +253,8 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 	}
 	for {
 		txHash := hex.EncodeToString(param.MakeTxParam.TxHash)
-		req := &bridgesdk.CheckFeeReq{Hash: txHash, ChainId: param.FromChainID}
-		resp, err := this.bridgeSdk.CheckFee([]*bridgesdk.CheckFeeReq{req})
+		req := &poly_bridge_sdk.CheckFeeReq{Hash: txHash, ChainId: param.FromChainID}
+		resp, err := this.bridgeSdk.CheckFee([]*poly_bridge_sdk.CheckFeeReq{req})
 		if err != nil {
 			log.Errorf("CheckFee failed:%v, TxHash:%s FromChainID:%d", err, txHash, param.FromChainID)
 			time.Sleep(time.Second)
@@ -267,11 +267,11 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 		}
 
 		switch resp[0].PayState {
-		case bridgesdk.STATE_HASPAY:
+		case poly_bridge_sdk.STATE_HASPAY:
 			return true
-		case bridgesdk.STATE_NOTPAY:
+		case poly_bridge_sdk.STATE_NOTPAY:
 			return false
-		case bridgesdk.STATE_NOTCHECK:
+		case poly_bridge_sdk.STATE_NOTCHECK:
 			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s FromChainID:%d, wait...", txHash, param.FromChainID)
 			time.Sleep(time.Second)
 			continue

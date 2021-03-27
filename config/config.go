@@ -59,7 +59,7 @@ type ServiceConfig struct {
 }
 
 type BridgeConfig struct {
-	RestURL []string
+	RestURL [][]string
 }
 
 type PolyConfig struct {
