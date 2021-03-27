@@ -360,14 +360,16 @@ func (this *BSCManager) commitHeader() int {
 			return 1
 		}
 	}
-	tick := time.NewTicker(100 * time.Millisecond)
+
 	var h uint32
-	for range tick.C {
+	for {
 		h, _ = this.polySdk.GetBlockHeightByTxHash(tx.ToHexString())
 		curr, _ := this.polySdk.GetCurrentBlockHeight()
 		if h > 0 && curr > h {
 			break
 		}
+		log.Infof("BSCManager SyncBlockHeader wait duration %s", time.Now().Sub(start).String())
+		time.Sleep(time.Second)
 	}
 	log.Infof("BSCManager MonitorChain - commitHeader - send transaction %s to poly chain and confirmed on height %d, synced bsc height %d, bsc height %d, took %s, header count %d", tx.ToHexString(), h, this.currentHeight, this.height, time.Now().Sub(start).String(), len(this.header4sync))
 	this.header4sync = make([][]byte, 0)
