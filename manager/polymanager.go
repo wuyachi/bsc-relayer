@@ -371,10 +371,16 @@ func (this *PolyManager) handleDepositEvents(height uint32) bool {
 				log.Infof("sender %s is handling poly tx ( hash: %s, height: %d )",
 					sender.acc.Address.String(), event.TxHash, height)
 				// temporarily ignore the error for tx
+				errCount := 0
 				for {
 					if sender.commitDepositEventsWithHeader(hdr, param, hp, anchor, event.TxHash, auditpath) {
 						break
 					} else {
+						errCount++
+						if errCount > 10 {
+							log.Errorf("commitDepositEventsWithHeader %s failed too many times, skip", event.TxHash)
+							break
+						}
 						log.Errorf("commitDepositEventsWithHeader failed, retry after 1 second")
 						time.Sleep(time.Second)
 					}
