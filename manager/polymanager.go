@@ -23,6 +23,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"os"
 	"strconv"
 	"strings"
 
@@ -448,6 +449,7 @@ func (this *EthSender) sendTxToEth(info *EthTxInfo) error {
 		err = this.ethClient.SendTransaction(context.Background(), signedtx)
 		if err != nil {
 			log.Errorf("poly to bsc SendTransaction error: %v, nonce %d", err, nonce)
+			os.Exit(1)
 		}
 		hash := signedtx.Hash()
 
