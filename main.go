@@ -23,7 +23,7 @@ import (
 	"runtime"
 	"syscall"
 
-	"poly-bridge/bridgesdk"
+	"poly_bridge_sdk"
 
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/polynetwork/bsc-relayer/cmd"
@@ -119,14 +119,14 @@ func startServer(ctx *cli.Context) {
 		return
 	}
 
-	bridgeSdk := bridgesdk.NewBridgeSdkPro(servConfig.BridgeConfig.RestURL, 5)
+	bridgeSdk := poly_bridge_sdk.NewBridgeFeeCheck(servConfig.BridgeConfig.RestURL, 5)
 
 	initPolyServer(servConfig, polySdk, ethereumsdk, bridgeSdk, boltDB)
 	initBSCServer(servConfig, polySdk, ethereumsdk, boltDB)
 	waitToExit()
 }
 
-func initPolyServer(servConfig *config.ServiceConfig, polysdk *sdk.PolySdk, ethereumsdk *ethclient.Client, bridgeSdk *bridgesdk.BridgeSdkPro, boltDB *db.BoltDB) {
+func initPolyServer(servConfig *config.ServiceConfig, polysdk *sdk.PolySdk, ethereumsdk *ethclient.Client, bridgeSdk *poly_bridge_sdk.BridgeFeeCheck, boltDB *db.BoltDB) {
 	mgr, err := manager.NewPolyManager(servConfig, uint32(PolyStartHeight), polysdk, ethereumsdk, bridgeSdk, boltDB)
 	if err != nil {
 		log.Fatalf("initPolyServer - PolyServer service start failed: %v", err)
