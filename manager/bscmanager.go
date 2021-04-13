@@ -241,10 +241,15 @@ func (this *BSCManager) handleNewBlock(height uint64) bool {
 		log.Errorf("handleNewBlock - handleBlockHeader on height :%d failed", height)
 		return false
 	}
-	ret = this.fetchLockDepositEvents(height, this.client)
-	if !ret {
-		log.Errorf("handleNewBlock - fetchLockDepositEvents on height :%d failed", height)
+	for {
+		ret = this.fetchLockDepositEvents(height, this.client)
+		if !ret {
+			log.Errorf("handleNewBlock - fetchLockDepositEvents on height :%d failed", height)
+			continue
+		}
+		break
 	}
+
 	return true
 }
 
