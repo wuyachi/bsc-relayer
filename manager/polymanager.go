@@ -444,8 +444,8 @@ type EthSender struct {
 
 func (this *EthSender) sendTxToEth(info *EthTxInfo) error {
 	nonce := this.nonceManager.GetAddressNonce(this.acc.Address)
-	origin := big.NewInt(9).Set(info.gasPrice)
-	maxPrice := big.NewInt(0).Quo(origin.Mul(origin, big.NewInt(15)), big.NewInt(10))
+	origin := big.NewInt(0).Set(info.gasPrice)
+	maxPrice := big.NewInt(0).Quo(big.NewInt(0).Mul(origin, big.NewInt(15)), big.NewInt(10))
 RETRY:
 	tx := types.NewTransaction(nonce, info.contractAddr, big.NewInt(0), info.gasLimit, info.gasPrice, info.txData)
 	signedtx, err := this.keyStore.SignTransaction(tx, this.acc)
@@ -476,7 +476,7 @@ RETRY:
 			log.Fatal("waitTransactionConfirm failed")
 			os.Exit(1)
 		}
-		info.gasPrice = big.NewInt(0).Quo(info.gasPrice.Mul(info.gasPrice, big.NewInt(11)), big.NewInt(10))
+		info.gasPrice = big.NewInt(0).Quo(big.NewInt(0).Mul(info.gasPrice, big.NewInt(11)), big.NewInt(10))
 		if info.gasPrice.Cmp(maxPrice) > 0 {
 			info.gasPrice.Set(maxPrice)
 		}
