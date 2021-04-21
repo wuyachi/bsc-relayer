@@ -23,7 +23,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
-	"os"
 	"strconv"
 	"strings"
 
@@ -455,7 +454,8 @@ func (this *EthSender) sendTxToEth(info *EthTxInfo) error {
 		err = this.ethClient.SendTransaction(context.Background(), signedtx)
 		if err != nil {
 			log.Errorf("poly to bsc SendTransaction error: %v, nonce %d", err, nonce)
-			os.Exit(1)
+			time.Sleep(time.Second)
+			continue
 		}
 		hash := signedtx.Hash()
 
@@ -468,7 +468,7 @@ func (this *EthSender) sendTxToEth(info *EthTxInfo) error {
 
 		log.Errorf("failed to relay tx to ethereum: (eth_hash: %s, nonce: %d, poly_hash: %s, eth_explorer: %s)",
 			hash.String(), nonce, info.polyTxHash, tools.GetExplorerUrl(this.keyStore.GetChainId())+hash.String())
-		time.Sleep(time.Second)
+		return nil
 	}
 
 }
