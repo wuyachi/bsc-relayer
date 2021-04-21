@@ -58,7 +58,7 @@ import (
 )
 
 const (
-	ChanLen = 64
+	ChanLen = 1
 )
 
 type PolyManager struct {
