@@ -1,4 +1,6 @@
 .vscode
+keystore/
+wallet.prod.dat
 config*.json
 wallet.dat
 log/*.log
