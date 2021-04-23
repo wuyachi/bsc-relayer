@@ -273,7 +273,7 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 		case poly_bridge_sdk.STATE_NOTPAY:
 			return false
 		case poly_bridge_sdk.STATE_NOTCHECK:
-			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s FromChainID:%d, wait...", txHash, param.FromChainID)
+			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s FromChainID:%d Poly Hash:%s, wait...", txHash, param.FromChainID, hex.EncodeToString(param.TxHash))
 			time.Sleep(time.Second)
 			continue
 		}
