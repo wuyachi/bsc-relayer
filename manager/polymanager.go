@@ -458,8 +458,7 @@ RETRY:
 		err = this.ethClient.SendTransaction(context.Background(), signedtx)
 		if err != nil {
 			log.Errorf("poly to bsc SendTransaction error: %v, nonce %d", err, nonce)
-			time.Sleep(time.Second)
-			continue
+			os.Exit(1)
 		}
 		hash := signedtx.Hash()
 
@@ -619,7 +618,7 @@ func (this *EthSender) commitHeader(header *polytypes.Header, pubkList []byte) b
 	}
 	if err = this.ethClient.SendTransaction(context.Background(), signedtx); err != nil {
 		log.Errorf("commitHeader - send transaction error:%s\n", err.Error())
-		os.Exit(1)
+		return false
 	}
 
 	hash := header.Hash()
