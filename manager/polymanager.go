@@ -619,7 +619,7 @@ func (this *EthSender) commitHeader(header *polytypes.Header, pubkList []byte) b
 	}
 	if err = this.ethClient.SendTransaction(context.Background(), signedtx); err != nil {
 		log.Errorf("commitHeader - send transaction error:%s\n", err.Error())
-		return false
+		os.Exit(1)
 	}
 
 	hash := header.Hash()
