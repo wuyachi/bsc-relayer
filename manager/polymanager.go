@@ -457,7 +457,7 @@ RETRY:
 	for {
 		err = this.ethClient.SendTransaction(context.Background(), signedtx)
 		if err != nil {
-			log.Errorf("poly to bsc SendTransaction error: %v, nonce %d", err, nonce)
+			log.Errorf("poly to bsc SendTransaction error: %v, nonce %d, account %s", err, nonce, this.acc.Address.Hex())
 			os.Exit(1)
 		}
 		hash := signedtx.Hash()
