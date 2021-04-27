@@ -452,14 +452,19 @@ func (this *BSCManager) handleLockDepositEvents(refHeight uint64) error {
 		height := int64(refHeight - this.config.BSCConfig.BlockConfig)
 		heightHex := hexutil.EncodeBig(big.NewInt(height))
 		proofKey := hexutil.Encode(keyBytes)
+		time1 := time.Now()
 		//2. get proof
 		proof, err := tools.GetProof(this.config.BSCConfig.URL(), this.config.BSCConfig.ECCDContractAddress, proofKey, heightHex, this.restClient)
 		if err != nil {
 			log.Errorf("handleLockDepositEvents - error :%s\n", err.Error())
 			continue
 		}
+		time2 := time.Now()
 		//3. commit proof to poly
+
 		txHash, err := this.commitProof(uint32(height), proof, crosstx.value, crosstx.txId)
+		time3 := time.Now()
+		log.Infof("tools.GetProof took %s commitProof took %s", time2.Sub(time1).String(), time3.Sub(time2).String())
 		if err != nil {
 			if strings.Contains(err.Error(), "chooseUtxos, current utxo is not enough") {
 				log.Infof("handleLockDepositEvents - invokeNativeContract error: %s", err)
