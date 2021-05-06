@@ -454,21 +454,30 @@ RETRY:
 		return fmt.Errorf("commitDepositEventsWithHeader - sign raw tx error and return nonce %d: %v", nonce, err)
 	}
 
+	var (
+		hash      ethcommon.Hash
+		isSuccess bool
+	)
 	for {
 		err = this.ethClient.SendTransaction(context.Background(), signedtx)
+
 		if err != nil {
 			log.Errorf("poly to bsc SendTransaction error: %v, nonce %d, account %s", err, nonce, this.acc.Address.Hex())
+			if strings.Contains(err.Error(), "transaction underpriced") {
+				goto FAIL
+			}
 			os.Exit(1)
 		}
-		hash := signedtx.Hash()
+		hash = signedtx.Hash()
 
-		isSuccess := this.waitTransactionConfirm(info.polyTxHash, hash)
+		isSuccess = this.waitTransactionConfirm(info.polyTxHash, hash)
 		if isSuccess {
 			log.Infof("successful to relay tx to ethereum: (eth_hash: %s, nonce: %d, poly_hash: %s, eth_explorer: %s)",
 				hash.String(), nonce, info.polyTxHash, tools.GetExplorerUrl(this.keyStore.GetChainId())+hash.String())
 			return nil
 		}
 
+	FAIL:
 		log.Errorf("failed to relay tx to ethereum: (eth_hash: %s, nonce: %d, poly_hash: %s, eth_explorer: %s origin_price:%d current_price:%d)",
 			hash.String(), nonce, info.polyTxHash, tools.GetExplorerUrl(this.keyStore.GetChainId())+hash.String(), origin.Int64(), info.gasPrice.Int64())
 		if info.gasPrice == maxPrice {
