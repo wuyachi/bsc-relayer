@@ -472,6 +472,7 @@ RETRY:
 		}
 		hash = signedtx.Hash()
 
+		log.Infof("account %s is waiting poly_hash %s", this.acc.Address.Hex(), info.polyTxHash)
 		isSuccess = this.waitTransactionConfirm(info.polyTxHash, hash)
 		if isSuccess {
 			log.Infof("successful to relay tx to ethereum: (eth_hash: %s, nonce: %d, poly_hash: %s, current_price:%d, eth_explorer: %s)",
