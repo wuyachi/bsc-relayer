@@ -460,8 +460,10 @@ RETRY:
 		isSuccess bool
 	)
 	for {
+		ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*10)
+		defer cancelFunc()
 		log.Infof("account %s is relaying poly_hash %s", this.acc.Address.Hex(), info.polyTxHash)
-		err = this.ethClient.SendTransaction(context.Background(), signedtx)
+		err = this.ethClient.SendTransaction(ctx, signedtx)
 
 		if err != nil {
 			log.Errorf("poly to bsc SendTransaction error: %v, nonce %d, account %s", err, nonce, this.acc.Address.Hex())
