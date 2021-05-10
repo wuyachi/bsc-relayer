@@ -445,6 +445,7 @@ type EthSender struct {
 func (this *EthSender) sendTxToEth(info *EthTxInfo) error {
 	nonce := this.nonceManager.GetAddressNonce(this.acc.Address)
 	origin := big.NewInt(0).Quo(big.NewInt(0).Mul(info.gasPrice, big.NewInt(12)), big.NewInt(10))
+	info.gasPrice = big.NewInt(origin.Int64())
 	maxPrice := big.NewInt(0).Quo(big.NewInt(0).Mul(origin, big.NewInt(15)), big.NewInt(10))
 RETRY:
 	tx := types.NewTransaction(nonce, info.contractAddr, big.NewInt(0), info.gasLimit, info.gasPrice, info.txData)
@@ -659,7 +660,7 @@ func (this *EthSender) Balance() (*big.Int, error) {
 func (this *EthSender) waitTransactionConfirm(polyTxHash string, hash ethcommon.Hash) bool {
 	start := time.Now()
 	for {
-		if time.Now().After(start.Add(time.Minute * 5)) {
+		if time.Now().After(start.Add(time.Minute * 3)) {
 			return false
 		}
 		time.Sleep(time.Second * 1)
