@@ -444,7 +444,7 @@ type EthSender struct {
 
 func (this *EthSender) sendTxToEth(info *EthTxInfo) error {
 	nonce := this.nonceManager.GetAddressNonce(this.acc.Address)
-	origin := big.NewInt(0).Set(info.gasPrice)
+	origin := big.NewInt(0).Quo(big.NewInt(0).Mul(info.gasPrice, big.NewInt(12)), big.NewInt(10))
 	maxPrice := big.NewInt(0).Quo(big.NewInt(0).Mul(origin, big.NewInt(15)), big.NewInt(10))
 RETRY:
 	tx := types.NewTransaction(nonce, info.contractAddr, big.NewInt(0), info.gasLimit, info.gasPrice, info.txData)
@@ -472,8 +472,8 @@ RETRY:
 
 		isSuccess = this.waitTransactionConfirm(info.polyTxHash, hash)
 		if isSuccess {
-			log.Infof("successful to relay tx to ethereum: (eth_hash: %s, nonce: %d, poly_hash: %s, eth_explorer: %s)",
-				hash.String(), nonce, info.polyTxHash, tools.GetExplorerUrl(this.keyStore.GetChainId())+hash.String())
+			log.Infof("successful to relay tx to ethereum: (eth_hash: %s, nonce: %d, poly_hash: %s, current_price:%d, eth_explorer: %s)",
+				hash.String(), nonce, info.polyTxHash, info.gasPrice.Int64(), tools.GetExplorerUrl(this.keyStore.GetChainId())+hash.String())
 			return nil
 		}
 
