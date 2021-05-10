@@ -460,6 +460,7 @@ RETRY:
 		isSuccess bool
 	)
 	for {
+		log.Infof("account %s is relaying poly_hash %s", this.acc.Address.Hex(), info.polyTxHash)
 		err = this.ethClient.SendTransaction(context.Background(), signedtx)
 
 		if err != nil {
