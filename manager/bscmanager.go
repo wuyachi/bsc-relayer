@@ -318,6 +318,10 @@ func (this *BSCManager) fetchLockDepositEvents(height uint64, client *ethclient.
 		}
 		param := &common2.MakeTxParam{}
 		_ = param.Deserialization(common.NewZeroCopySource([]byte(evt.Rawdata)))
+		if !this.config.IsWhitelistMethod(param.Method) {
+			log.Errorf("target contract method invalid %s", param.Method)
+			continue
+		}
 		raw, _ := this.polySdk.GetStorage(autils.CrossChainManagerContractAddress.ToHexString(),
 			append(append([]byte(cross_chain_manager.DONE_TX), autils.GetUint64Bytes(this.config.BSCConfig.SideChainId)...), param.CrossChainID...))
 		if len(raw) != 0 {
