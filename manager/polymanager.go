@@ -252,7 +252,7 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue, currentHeight uint
 	if this.config.Free {
 		return true
 	}
-
+        var count int
 	for {
 		txHash := hex.EncodeToString(param.MakeTxParam.TxHash)
 		req := &poly_bridge_sdk.CheckFeeReq{Hash: txHash, ChainId: param.FromChainID}
@@ -268,7 +268,7 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue, currentHeight uint
 			continue
 		}
 
-		var count int
+		
 		switch resp[0].PayState {
 		case poly_bridge_sdk.STATE_HASPAY:
 			return true
