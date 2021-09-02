@@ -248,10 +248,11 @@ func (this *PolyManager) IsEpoch(hdr *polytypes.Header) (bool, []byte, error) {
 	return true, publickeys, nil
 }
 
-func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
+func (this *PolyManager) isPaid(param *common2.ToMerkleValue, currentHeight uint32) bool {
 	if this.config.Free {
 		return true
 	}
+
 	for {
 		txHash := hex.EncodeToString(param.MakeTxParam.TxHash)
 		req := &poly_bridge_sdk.CheckFeeReq{Hash: txHash, ChainId: param.FromChainID}
@@ -267,12 +268,26 @@ func (this *PolyManager) isPaid(param *common2.ToMerkleValue) bool {
 			continue
 		}
 
+		var count int
 		switch resp[0].PayState {
 		case poly_bridge_sdk.STATE_HASPAY:
 			return true
 		case poly_bridge_sdk.STATE_NOTPAY:
 			return false
 		case poly_bridge_sdk.STATE_NOTCHECK:
+			latestHeight, err := this.polySdk.GetCurrentBlockHeight()
+			if err != nil {
+				log.Errorf("PolyManager MonitorChain - get chain block height error: %s", err)
+				return false
+			}
+			// 处理bsc异常交易，落后3600个块（约1小时）默认已经失败，快速返回
+			if latestHeight-currentHeight > 3600 {
+				return false
+			}
+			count++
+			if count > 300 {
+				return false
+			}
 			log.Errorf("CheckFee STATE_NOTCHECK, TxHash:%s FromChainID:%d Poly Hash:%s, wait...", txHash, param.FromChainID, hex.EncodeToString(param.TxHash))
 			time.Sleep(time.Second)
 			continue
@@ -342,7 +357,7 @@ func (this *PolyManager) handleDepositEvents(height uint32) bool {
 					log.Errorf("Invalid target contract method %s", param.MakeTxParam.Method)
 					continue
 				}
-				if !this.isPaid(param) {
+				if !this.isPaid(param, height) {
 					log.Infof("%v skipped because not paid", event.TxHash)
 					continue
 				}
