@@ -133,6 +133,7 @@ func initPolyServer(servConfig *config.ServiceConfig, polysdk *sdk.PolySdk, ethe
 		return
 	}
 	go mgr.MonitorChain()
+	go mgr.MonitorDeposit()
 }
 
 func initBSCServer(servConfig *config.ServiceConfig, polysdk *sdk.PolySdk, ethereumsdk *ethclient.Client, boltDB *db.BoltDB) {
