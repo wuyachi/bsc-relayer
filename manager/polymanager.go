@@ -550,7 +550,7 @@ func (this *PolyManager) handleLockDepositEvents() error {
 			log.Errorf("handleLockDepositEvents - retry.Deserialization error: %s", err)
 			continue
 		}
-		log.Infof("Wait for processing poly tx %s", bridgeTransaction.PolyHash)
+		log.Infof("Wait for processing poly tx %s", bridgeTransaction.PolyHash())
 		bridgeTransactions[fmt.Sprintf("%d%s", bridgeTransaction.param.FromChainID, hex.EncodeToString(bridgeTransaction.param.MakeTxParam.TxHash))] = bridgeTransaction
 	}
 	noCheckFees := make([]*poly_bridge_sdk.CheckFeeReq, 0)
