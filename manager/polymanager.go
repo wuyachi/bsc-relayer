@@ -533,7 +533,7 @@ func (this *PolyManager) handleLockDepositEvents() error {
 					} else if checkFee.PayState == bridgesdk.STATE_NOTPAY {
 						log.Infof("tx(%d,%s) has not payed fee", checkFee.ChainId, checkFee.Hash)
 						item.hasPay = FEE_NOTPAY
-					} else if checkFee.PayState == bridgesdk.STATE_NOTPAY {
+					} else if checkFee.PayState == bridgesdk.STATE_NOTPOLYPROXY {
 						log.Infof("tx(%d,%s) has not POLYPROXY", checkFee.ChainId, checkFee.Hash)
 						item.hasPay = FEE_NOTPAY
 					} else {
