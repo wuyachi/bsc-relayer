@@ -66,6 +66,15 @@ const (
 	FEE_NOTPAY
 )
 
+const MaxGasLimit = uint64(350000)
+
+func CheckGasLimit(hash string, limit uint64) error {
+	if limit > MaxGasLimit {
+		return fmt.Errorf("Skipping tx %s for gas limit too high %d ", hash, limit)
+	}
+	return nil
+}
+
 type BridgeTransaction struct {
 	header       *polytypes.Header
 	param        *common2.ToMerkleValue
@@ -798,6 +807,13 @@ func (this *EthSender) commitHeader(header *polytypes.Header, pubkList []byte) b
 	gasLimit, err := this.ethClient.EstimateGas(context.Background(), callMsg)
 	if err != nil {
 		log.Errorf("commitHeader - estimate gas limit error: %s", err.Error())
+		return true
+	}
+
+	// Check gas limit
+	gasLimit = uint64(float32(gasLimit) * 1.1)
+	if e := CheckGasLimit(string(txData), gasLimit); e != nil {
+		log.Errorf("Skipped  tx %s for gas limit too high %v", string(txData), gasLimit)
 		return true
 	}
 
